@@ -1,0 +1,8 @@
+telegram {
+    bot {
+        token = ""
+    }
+    chat {
+        id = 0
+    }
+}
