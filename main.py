@@ -14,8 +14,5 @@ if __name__ == '__main__':
     responder = threads.Responder(bot, messaging.outgoing_queue)
     responder.start()
 
-    runner = threads.ScheduleRunner(messaging.schedule_queue)
-    runner.start()
-
     while True:
         time.sleep(5)

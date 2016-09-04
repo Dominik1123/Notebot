@@ -1,6 +1,7 @@
 from Queue import Queue
 import re
 import time
+import threading
 
 import sched
 
@@ -78,10 +79,9 @@ def new_reminder(msg):
         text = "Hey %s, don't forget to %s" % (msg['from']['first_name'], reminder_text)
         outgoing_queue.put((msg['chat']['id'], text))
 
-    schedule_queue.enter(compute_delay(match.groupdict()),
-                         0,
-                         put_reminder_to_outgoing_queue,
-                         [match.groupdict()['what']])
+    timer = threading.Timer(compute_delay(match.groupdict()), put_reminder_to_outgoing_queue,
+                            [match.groupdict()['what']])
+    timer.start()
 
 command_reactions = {
     getattr(reaction, 'command'): reaction for reaction in [new_reminder]

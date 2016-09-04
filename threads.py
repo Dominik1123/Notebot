@@ -12,14 +12,3 @@ class Responder(threading.Thread):
         while True:
             message_tuple = self.queue.get()
             self.bot.sendMessage(message_tuple[0], message_tuple[1])
-
-
-class ScheduleRunner(threading.Thread):
-    def __init__(self, schedule_queue):
-        super(ScheduleRunner, self).__init__()
-
-        self.schedule_queue = schedule_queue
-
-    def run(self):
-        while True:
-            self.schedule_queue.run()
