@@ -107,10 +107,11 @@ def software_update(msg):
     :param msg:
     :return:
     """
-    outgoing_queue.put((msg['chat']['id', 'Starting software update ...']))
+    outgoing_queue.put((msg['chat']['id'], 'Starting software update ...'))
     subprocess.call(['git', '--git-dir=%s' % config.config['git.git-dir'],
                      '--work-tree=%s' % config.config['git.work-tree'], 'pull'])
-    outgoing_queue.put((msg['chat']['id', '... done.']))
+    outgoing_queue.put((msg['chat']['id'], '... done.'))
+    time.sleep(1)  # Wait a second for the message to be sent.
     subprocess.call(['systemctl', 'restart', config.config['systemd.service']])
 
 
