@@ -89,7 +89,7 @@ def new_reminder(msg):
         create_outgoing_error(msg, 'Regex did not match')
         return
     print match.groupdict()
-    outgoing_queue.put((msg['chat']['id'], 'Delay is %s' % compute_delay(match.groupdict())))
+    outgoing_queue.put((msg['chat']['id'], "Ok, I'll remind you in %d seconds." % compute_delay(match.groupdict())))
 
     def put_reminder_to_outgoing_queue(reminder_text):
         text = "Hey %s, don't forget to %s!" % (msg['from']['first_name'], reminder_text)
