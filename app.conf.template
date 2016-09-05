@@ -6,3 +6,12 @@ telegram {
         id = 0
     }
 }
+
+git {
+    git-dir = ""
+    work-tree = ""
+}
+
+systemd {
+    service = ""
+}

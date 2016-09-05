@@ -1,6 +1,7 @@
 import datetime
 from Queue import Queue
 import re
+import subprocess
 import time
 import threading
 
@@ -99,8 +100,20 @@ def new_reminder(msg):
     timer.start()
 
 
+@trigger_by_command('/update')
+def software_update(msg):
+    """Update the software via git pull and restart of systemd service.
+
+    :param msg:
+    :return:
+    """
+    subprocess.call(['git', '--git-dir=%s' % config.config['git.git-dir'],
+                     '--work-tree=%s' % config.config['git.work-tree'], 'pull'])
+    subprocess.call(['systemctl', 'restart', config.config['systemd.service']])
+
+
 command_reactions = {
-    getattr(reaction, 'command'): reaction for reaction in [new_reminder]
+    getattr(reaction, 'command'): reaction for reaction in [new_reminder, software_update]
     }
 
 error_messages = {
