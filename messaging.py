@@ -143,7 +143,8 @@ def software_update(msg):
 
 
 command_reactions = {
-    getattr(reaction, 'command'): reaction for reaction in [new_reminder, software_update, add_saved_money]
+    getattr(reaction, 'command'): reaction for reaction in [new_reminder, software_update, add_saved_money,
+                                                            how_much_saved]
     }
 
 error_messages = {
