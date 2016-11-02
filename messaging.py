@@ -1,4 +1,5 @@
-import datetime
+from collections import defaultdict
+from datetime import datetime
 from Queue import Queue
 import re
 import subprocess
@@ -110,6 +111,20 @@ def add_saved_money(msg):
         return
     outgoing_queue.put((msg['chat']['id'], "Ok, I noted down that you saved %s." % match.groupdict()['amount']))
     savemoney.savemoney(float(match.groupdict()['amount']))
+
+
+@trigger_by_command('/howmuchdidisave')
+def how_much_saved(msg):
+    savings = savemoney.get_all_records()
+    timestamp_format = '%Y-%m-%d %H:%M:%S.%f'
+    savings_per_month = defaultdict(float)
+    for saving in savings:
+        timestamp = datetime.strptime(saving['timestamp'], timestamp_format)
+        savings_per_month[timestamp.month] = float(saving['amount'])
+    savings_string = "Here is what you've saved so far:\n"
+    for month, amount in savings_per_month:
+        savings_string += '%s: %.2f\n' % (datetime.strptime('{:02d}'.format(month), '%m').strftime('%B'), amount)
+    outgoing_queue.put((msg['chat']['id'], savings_string))
 
 
 @trigger_by_command('/update')
