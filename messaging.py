@@ -120,7 +120,7 @@ def how_much_saved(msg):
     savings_per_month = defaultdict(float)
     for saving in savings:
         timestamp = datetime.strptime(saving['timestamp'], timestamp_format)
-        savings_per_month[timestamp.month] = float(saving['amount'])
+        savings_per_month[timestamp.month] += float(saving['amount'])
     savings_string = "Here is what you've saved so far:\n"
     for month, amount in savings_per_month.iteritems():
         savings_string += '%s: %.2f\n' % (datetime.strptime('{:02d}'.format(month), '%m').strftime('%B'), amount)
