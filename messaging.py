@@ -8,6 +8,7 @@ import threading
 import sched
 
 import config
+import savemoney
 
 outgoing_queue = Queue()
 schedule_queue = sched.scheduler(time.time, time.sleep)
@@ -100,6 +101,17 @@ def new_reminder(msg):
     timer.start()
 
 
+@trigger_by_command('/savemoney')
+def add_saved_money(msg):
+    pattern = r'%s (?P<amount>[.0-9]+)' % add_saved_money.command
+    match = re.match(pattern, msg['text'])
+    if match is None:
+        create_outgoing_error(msg, 'Regex did not match')
+        return
+    outgoing_queue.put((msg['chat']['id'], "Ok, I noted down that you saved %s." % match.groupdict()['amount']))
+    savemoney.savemoney(float(match.groupdict()['amount']))
+
+
 @trigger_by_command('/update')
 def software_update(msg):
     """Update the software via git pull and restart of systemd service.
@@ -116,7 +128,7 @@ def software_update(msg):
 
 
 command_reactions = {
-    getattr(reaction, 'command'): reaction for reaction in [new_reminder, software_update]
+    getattr(reaction, 'command'): reaction for reaction in [new_reminder, software_update, add_saved_money]
     }
 
 error_messages = {

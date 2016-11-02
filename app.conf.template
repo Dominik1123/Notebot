@@ -7,6 +7,12 @@ telegram {
     }
 }
 
+savemoney {
+    db {
+        path = ""
+    }
+}
+
 git {
     git-dir = ""
     work-tree = ""
