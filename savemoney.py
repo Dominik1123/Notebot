@@ -13,4 +13,4 @@ def savemoney(amount):
 
 def get_all_records():
     query = tinydb.Query()
-    return db.search(query.id >= 0)
+    return db.search(query.timestamp != '')
