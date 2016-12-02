@@ -21,3 +21,12 @@ git {
 systemd {
     service = ""
 }
+
+website {
+    url {
+        template = ""
+    }
+    content {
+        not_available = ""
+    }
+}
