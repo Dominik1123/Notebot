@@ -14,10 +14,15 @@ class Observer(threading.Thread):
         self.chat_ids = chat_ids
 
     def run(self):
+        year, month = datetime.datetime.now().year, datetime.datetime.now().month
         day = datetime.datetime.now().day
         not_avail_content = config['website.content.not_available']
 
         while day <= 31:
+            # Skip Saturdays and Sundays.
+            if datetime.datetime(year, month, day).weekday() in (5, 6):
+                day += 1
+                continue
             url = config['website.url.template'] % day
             print 'Trying %s' % url
             response = requests.get(url, verify=False)
